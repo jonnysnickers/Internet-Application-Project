@@ -1,0 +1,20 @@
+<div class="row">
+<%= form_for(:app_data, url: "/new_appointment2/#{@patient_id}", :html => { :method => 'GET' } ) do |f| %>
+    
+      <div class="userlistforadmin" >
+      <%= f.label :doctor %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.collection_select :user, @doctors, :id, :username %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.label :clinic %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.collection_select :clinic, @clinics, :id, :name %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.submit "Serach", class: "btn btn-primary btn-xs" %>
+      </div>
+<% end %>
+</div>

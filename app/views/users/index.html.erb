@@ -1,0 +1,10 @@
+<% provide(:title, 'Doctors') %>
+<h1>Doctors</h1>
+
+<ul class="users">
+  <% @doctors.each do |doctor| %>
+    <li>
+      <%= link_to "#{doctor.firstname} #{doctor.lastname}", "duties/#{doctor.id}" %>
+    </li>
+  <% end %>
+</ul>

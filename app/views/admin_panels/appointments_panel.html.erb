@@ -1,0 +1,16 @@
+<% provide(:title, 'Appointments panel') %>
+
+<ul class="users">
+  <% @appointments.each do |appointment| %>
+    <li>
+      <div class="userlistforadmin" >
+        <%= "#{appointment.date} | #{appointment.doctor.lastname} | #{appointment.patient.lastname} | #{appointment.clinic.name}" %>
+      </div>
+      <div class="userlistforadmin2" >
+        <%= form_for(:no_params, url: "/delete_appointment/#{appointment.id}") do |f| %>
+        <%= f.submit "Delete", class: "btn btn-danger btn-xs", data: { confirm: 'Are you sure you want to delete this appointment?' } %>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>

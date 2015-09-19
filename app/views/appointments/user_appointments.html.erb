@@ -1,0 +1,36 @@
+<% provide(:title, "Appointments") %>
+<h1>Appointments</h1>
+
+<h3>Not confirmed</h3>
+<ul class="users">
+  <% @app_n.each do |app| %>
+    <li>
+      <div class="userlistforadmin" >
+        <%= "#{app.patient.firstname} #{app.patient.lastname} | #{app.doctor.firstname} #{app.doctor.lastname} | #{app.clinic.name} | #{app.date}" %>
+      </div>
+      <div class="userlistforadmin2" >
+        <%= form_for(:app_data2, url: "/user_enable_appointment/#{app.id}") do |f| %>
+        <%= f.hidden_field :patient_id, :value => app.patient_id %>
+        <%= f.submit "Confirm", class: "btn btn-primary btn-xs" %>
+        <% end %>
+      </div>
+      <div class="userlistforadmin2" >
+        <%= form_for(:app_data2, url: "/user_delete_appointment/#{app.id}") do |f| %>
+        <%= f.hidden_field :patient_id, :value => app.patient_id %>
+        <%= f.submit "Delete", class: "btn btn-danger btn-xs", data: { confirm: 'Are you sure you want to delete this appointment?' } %>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>
+
+<h3>Confirmed</h3>
+<ul class="users">
+  <% @app_y.each do |app| %>
+    <li>
+      <div class="userlistforadmin" >
+        <%= "#{app.patient.firstname} #{app.patient.lastname} | #{app.doctor.firstname} #{app.doctor.lastname} | #{app.clinic.name} | #{app.date}" %>
+      </div>
+    </li>
+  <% end %>
+</ul>

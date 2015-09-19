@@ -1,0 +1,20 @@
+<div class="row">
+  
+<%= form_for(:app_data2, url: "/new_appointment2" ) do |f| %>
+      
+      <%= f.hidden_field :doctor_id, :value => @doctor_id %>
+      <%= f.hidden_field :patient_id, :value => @patient_id %>
+      <%= f.hidden_field :clinic_id, :value => @clinic_id %>
+      
+      <div class="userlistforadmin" >
+      <%= f.label :appointment %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.collection_select :appointment, @apps, :date, :date %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.submit "Submit", class: "btn btn-primary btn-xs" %>
+      </div>
+<% end %>
+
+</div>

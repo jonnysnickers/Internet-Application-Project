@@ -1,0 +1,17 @@
+<% provide(:title, 'Clinics panel') %>
+<%= link_to "Create new clinic", "/admin_new_clinic", :class => "btn btn-primary" %>
+
+<ul class="users">
+  <% @clinics.each do |clinic| %>
+    <li>
+      <div class="userlistforadmin" >
+        <%= clinic.name %>
+      </div>
+      <div class="userlistforadmin2" >
+        <%= form_for(:no_params, url: "/delete_clinic/#{clinic.id}") do |f| %>
+        <%= f.submit "Delete", class: "btn btn-danger btn-xs", data: { confirm: 'Are you sure you want to delete this clinic?' } %>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>

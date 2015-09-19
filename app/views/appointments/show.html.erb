@@ -1,0 +1,11 @@
+<% provide(:title, "Appointments") %>
+<h1>Appointments</h1>
+<div class="row">
+  <ul class="users">
+  <% @appointments.each do |app| %>
+    <li>
+      <%= "#{app.patient.firstname} #{app.patient.lastname} | #{app.doctor.firstname} #{app.doctor.lastname} | #{app.clinic.name} | #{app.date}" %>
+    </li>
+  <% end %>
+</ul>
+</div>

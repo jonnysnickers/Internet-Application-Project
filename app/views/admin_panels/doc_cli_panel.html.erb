@@ -1,0 +1,40 @@
+<% provide(:title, 'Doctor-Clinic panel') %>
+
+<div class="row">
+<%= form_for(@new_doc_cli, url: "/create_doc_cli") do |f| %>
+    
+      <div class="userlistforadmin" >
+      <%= f.label :doctor %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.collection_select :user, @doctors, :id, :username, include_blank: true %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.label :clinic %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.collection_select :clinic, @clinics, :id, :name, include_blank: true %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.submit "Add new doc-cli", class: "btn btn-primary btn-xs" %>
+      </div>
+<% end %>
+</div>
+
+<ul class="users">
+  <% @doc_cli.each do |dc| %>
+    <li>
+      <div class="userlistforadmin" >
+        <%= link_to "#{dc.user.firstname} #{dc.user.lastname}", "users/#{dc.user.id}" %>
+      </div>
+      <div class="userlistforadmin" >
+        <%= dc.clinic.name %>
+      </div>
+      <div class="userlistforadmin2" >
+        <%= form_for(:no_params, url: "/delete_doc_cli/#{dc.id}") do |f| %>
+        <%= f.submit "Delete", class: "btn btn-danger btn-xs", data: { confirm: 'Are you sure you want to delete this doc-cli?' } %>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(:workplan, url: "/duties/#{@doctor_id}") do |f| %>
+      <table>
+      <tr>
+        <th>Time</th>
+        <th>Monday</th>
+        <th>Tuesday</th> 
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+      </tr>
+      
+      <% (18..32).to_a.each do |i| %>
+      <tr>
+        <td>
+          <%= "#{(i*30)/60}:#{(i*30)%60==0?"00":(i*30)%60}" %> 
+        </td>
+        <% (0..4).to_a.each do |j| %>
+          <td>
+            <%= f.collection_select "#{j*1440 + i*30}".to_sym, @clinics, :id, :name, include_blank: true, :selected => "#{@plan[j*1440 + i*30]}".to_i %>
+          </td>
+        <% end %>
+      </tr>
+      <% end %>
+      </table>
+      
+      </br>
+      <div class="col-md-4 col-md-offset-5 text-center">
+      <%= f.submit "Update", class: "btn btn-primary" %>
+      </div>
+    
+    <% end %>
+
+  </div>
+</div>

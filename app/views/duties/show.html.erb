@@ -1,0 +1,29 @@
+<% provide(:title, "Workplan") %>
+<h1>Workplan</h1>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <table>
+      <tr>
+        <th>Time</th>
+        <th>Monday</th>
+        <th>Tuesday</th> 
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+      </tr>
+      
+      <% (18..32).to_a.each do |i| %>
+      <tr>
+        <td>
+          <%= "#{(i*30)/60}:#{(i*30)%60==0?"00":(i*30)%60}" %> 
+        </td>
+        <% (0..4).to_a.each do |j| %>
+          <td>
+            <%= @plan[j*1440 + i*30] %>
+          </td>
+        <% end %>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
