@@ -49,4 +49,7 @@ Rails.application.routes.draw do
   post "/user_enable_appointment/:id" => "appointments#enable_appointment"
   post "/user_delete_appointment/:id" => "appointments#destroy_appointment"
   
+  post "/specific_app_doc/:id" => "appointments#make_appointment_doc"
+  post "/specific_app_cli/:id" => "appointments#make_appointment_cli"
+  
 end

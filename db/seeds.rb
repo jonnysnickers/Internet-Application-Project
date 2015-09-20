@@ -24,4 +24,4 @@ d1 = Duty.create(user: doc1, clinic: cli1, date: 540)
 d1 = Duty.create(user: doc1, clinic: cli2, date: 570)
 
 app1 = Appointment.create(patient: user1, doctor: doc1, clinic: cli1, date: "2015-09-15 19:42:48", enabled: "y")
-app2 = Appointment.create(patient: user1, doctor: doc1, clinic: cli1, date: "2018-09-15 20:42:48", enabled: "y")
+app2 = Appointment.create(patient: user1, doctor: doc1, clinic: cli1, date: "2018-09-15 20:42:48", enabled: "y)"

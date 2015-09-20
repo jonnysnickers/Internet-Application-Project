@@ -1,11 +1,11 @@
 class AppointmentsController < ApplicationController
   
   before_action :logged_in_user
-  before_action :correct_user,   only: [:show, :new_appointment, :new_appointment2, :user_appointments]
+  before_action :correct_user,   only: [:show, :new_appointment, :new_appointment2, :user_appointments, :make_appointment_doc, :make_appointment_cli ]
   before_action :correct_user2,  only: [:create_appointment, :enable_appointment, :destroy_appointment]
   
   def show
-    @appointments = Appointment.where(doctor_id: params[:id])
+    @appointments = Appointment.where( { doctor_id: params[:id], enabled: "y" } )
   end
   
   def new_appointment
@@ -53,7 +53,7 @@ class AppointmentsController < ApplicationController
       flash[:success] = "Appointment created, please confirm it."
       redirect_to "/user_appointments/#{p_id}"
     end
-    rescue => e
+    rescue
       flash[:danger] = "It was impossible to create this appointment. Please try again."
       redirect_to "/new_appointment/#{p_id}"
   end
@@ -86,6 +86,79 @@ class AppointmentsController < ApplicationController
     end
   end
   
+  def make_appointment_doc
+    @patient_id = params[:id]
+    @doctor_id = params[:app_data][:user]
+    
+    duties = Duty.where(user_id: @doctor_id)
+    clear_appointments
+    beg_of_week = DateTime.now.beginning_of_week.to_i 
+    now = DateTime.now.to_i
+    
+    stop = 0
+    (0..4).each { |i| 
+      duties.each { |d|
+        tmp = Appointment.new(patient_id: @patient_id, doctor_id: @doctor_id, clinic_id: d.clinic_id, date: Time.at(beg_of_week + i*604800 + 60*d.date), enabled: "n")
+        if( tmp.date.to_i > now && tmp.valid?)
+          begin
+            tmp.save
+            stop = 1
+          rescue
+            stop = 2
+          end
+        end
+        break if stop != 0
+      }
+      break if stop != 0
+    }
+    if stop == 0
+      flash[:danger] = "No termin found. Please try again later."
+      redirect_to "/new_appointment/#{@patient_id}"
+    elsif stop == 1
+      flash[:success] = "Appointment created, please confirm it."
+      redirect_to "/user_appointments/#{@patient_id}"
+    else
+      flash[:danger] = "It was impossible to create appointment. Please try again."
+      redirect_to "/new_appointment/#{@patient_id}"
+    end
+  end
+  
+  def make_appointment_cli
+    @patient_id = params[:id]
+    @clinic_id = params[:app_data][:clinic]
+    
+    duties = Duty.where(clinic_id: @clinic_id)
+    clear_appointments
+    beg_of_week = DateTime.now.beginning_of_week.to_i 
+    now = DateTime.now.to_i
+    
+    stop = 0
+    (0..4).each { |i| 
+      duties.each { |d|
+        tmp = Appointment.new(patient_id: @patient_id, doctor_id: d.user_id, clinic_id: @clinic_id, date: Time.at(beg_of_week + i*604800 + 60*d.date), enabled: "n")
+        if( tmp.date.to_i > now && tmp.valid?)
+          begin
+            tmp.save
+            stop = 1
+          rescue
+            stop = 2 
+          end
+        end
+        break if stop != 0
+      }
+      break if stop != 0
+    }
+    if stop == 0
+      flash[:danger] = "No termin found. Please try again later."
+      redirect_to "/new_appointment/#{@patient_id}"
+    elsif stop == 1
+      flash[:success] = "Appointment created, please confirm it."
+      redirect_to "/user_appointments/#{@patient_id}"
+    else
+      flash[:danger] = "It was impossible to create appointment. Please try again."
+      redirect_to "/new_appointment/#{@patient_id}"
+    end
+  end
   
   
 private
@@ -93,7 +166,7 @@ private
     apps = Appointment.all
     now = DateTime.now.to_i
     apps.each { |a| 
-      if a.created_at.to_i + 60 < now && a.enabled == "n"
+      if a.created_at.to_i + 600 < now && a.enabled == "n"
         a.destroy
       end
     }

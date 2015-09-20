@@ -18,3 +18,32 @@
       </div>
 <% end %>
 </div>
+
+<div class="row">
+<%= form_for(:app_data, url: "/specific_app_doc/#{@patient_id}") do |f| %>
+      <div class="userlistforadmin" >
+      <%= f.label :first_appointment_for_doctor %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.collection_select :user, @doctors, :id, :username %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.submit "Make appointmets", class: "btn btn-primary btn-xs" %>
+      </div>
+<% end %>
+</div>
+
+<div class="row">
+<%= form_for(:app_data, url: "/specific_app_cli/#{@patient_id}") do |f| %>
+      <div class="userlistforadmin" >
+      <%= f.label :first_appointment_for_clinic %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.collection_select :clinic, @clinics, :id, :name %>
+      </div>
+      <div class="userlistforadmin" >
+      <%= f.submit "Make appointmets", class: "btn btn-primary btn-xs" %>
+      </div>
+<% end %>
+
+</div>
